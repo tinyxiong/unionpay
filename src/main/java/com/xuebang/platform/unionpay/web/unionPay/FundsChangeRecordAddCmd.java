@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * Date: 2017/11/24 17:33
  * desc: 接受收款记录的cmd
  */
-public class FundsChangeRecordAddCmd {//todo 字段有可能需要修改或者补充
+public class FundsChangeRecordAddCmd {
 
     //支付金额
     private BigDecimal paidAmount = BigDecimal.ZERO;
@@ -87,9 +87,15 @@ public class FundsChangeRecordAddCmd {//todo 字段有可能需要修改或者�
         this.terminalNumber = terminalNumber;
     }
 
-    public FundsChangeRecordShellAddCmd toShellAddCmd() {//todo 待完善
+    public FundsChangeRecordShellAddCmd toShellAddCmd() {
         FundsChangeRecordShellAddCmd shellAddCmd = FundsChangeRecordShellAddCmd.newOne();
-
+        shellAddCmd.setPaidAmount(this.paidAmount);
+        shellAddCmd.setRemark(this.remark);
+        shellAddCmd.setBlCampusId(this.blCampusId);
+        shellAddCmd.setBlCampusName(this.blCampusName);
+        shellAddCmd.setInstitutionId(this.institutionId);
+        shellAddCmd.setCodeNumber(this.codeNumber);
+        shellAddCmd.setTerminalNumber(this.terminalNumber);
         return shellAddCmd;
     }
 }

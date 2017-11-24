@@ -1,4 +1,4 @@
-package com.xuebang.platform.unionpay;
+package com.xuebang.platform;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

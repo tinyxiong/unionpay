@@ -49,11 +49,16 @@ public class UnionPayController {
      */
     @GetMapping("/page")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public Response page(SortablePageReq pageReq) {
+    public Response page(SortablePageReq pageReq, ListQo listQo) {
 
         Pageable pageable = WebUtil.pageRequest(pageReq);
 
-        Page<FundsChangeRecord> records = fundsChangeRecordRep.findAll((root, cq, cb) -> cb.equal(root.get("status"), PaidStatus.UNPAID), pageable);
+        Page<FundsChangeRecord> records = fundsChangeRecordRep.findAll((root, cq, cb) ->
+                        cb.and(cb.equal(root.get("paidStatus"), PaidStatus.UNPAID)
+                        , cb.equal(root.get("blCampusId"), listQo.getBlCampusId())
+                        , cb.equal(root.get("institutionId"), listQo.getInstitutionId())
+                        , cb.equal(root.get("terminalNumber"), listQo.getTerminalNumber())
+                        ), pageable);
 
         Page<FundsChangeRecordDto> dtos = records.map(FundsChangeRecordDto::fromFundsChangeRecord);
         return Response.newDataResponse(dtos);
@@ -84,7 +89,6 @@ public class UnionPayController {
     public Response success(@PathVariable Long id) {
         FundsChangeRecord fundsChangeRecord = fundsChangeRecordRep.findOne((root, cq, cb) -> cb.equal(root.get("id"), id));
         fundsChangeRecord.success();//支付成功
-//        fundsChangeRecord.unlock();//解锁
         return Response.newNormalResponse();
     }
 
@@ -97,7 +101,37 @@ public class UnionPayController {
     public Response failed(@PathVariable Long id) {
         FundsChangeRecord fundsChangeRecord = fundsChangeRecordRep.findOne((root, cq, cb) -> cb.equal(root.get("id"), id));
         fundsChangeRecord.failed();//支付失败
-//        fundsChangeRecord.unlock();//解锁
         return Response.newNormalResponse();
+    }
+
+    private static class ListQo {
+
+        private Long blCampusId;
+        private Long institutionId;
+        private String terminalNumber;
+
+        public Long getBlCampusId() {
+            return blCampusId;
+        }
+
+        public void setBlCampusId(Long blCampusId) {
+            this.blCampusId = blCampusId;
+        }
+
+        public Long getInstitutionId() {
+            return institutionId;
+        }
+
+        public void setInstitutionId(Long institutionId) {
+            this.institutionId = institutionId;
+        }
+
+        public String getTerminalNumber() {
+            return terminalNumber;
+        }
+
+        public void setTerminalNumber(String terminalNumber) {
+            this.terminalNumber = terminalNumber;
+        }
     }
 }
