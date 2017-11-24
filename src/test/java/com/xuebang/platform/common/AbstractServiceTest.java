@@ -12,8 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
  * AbstractServiceTest
  * description: 测试service
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = UnionPayController.class)
-@WebAppConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public abstract class AbstractServiceTest {
 }

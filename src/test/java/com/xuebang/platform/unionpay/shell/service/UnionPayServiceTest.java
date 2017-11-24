@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
 
-//@Transactional
+@Transactional
 public class UnionPayServiceTest extends AbstractServiceTest {
 
     @Autowired
@@ -47,7 +47,7 @@ public class UnionPayServiceTest extends AbstractServiceTest {
         long after = fundsChangeRecordRep.count(null);
         assertEquals(before + 1, after);
 
-        FundsChangeRecord one = fundsChangeRecordRep.findOne((root, cq, cb) -> cb.equal(root.get("id"), 1L));
+        FundsChangeRecord one = fundsChangeRecordRep.findOne((root, cq, cb) -> cb.equal(root.get("id"), 7L));
         assertEquals("test校区", one.getBlCampusName());
         assertEquals(1, one.getBlCampusId().intValue());
         assertEquals("123456", one.getCodeNumber());
