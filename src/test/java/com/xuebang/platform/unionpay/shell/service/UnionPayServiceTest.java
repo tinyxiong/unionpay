@@ -5,9 +5,12 @@ import com.xuebang.platform.unionpay.shell.constants.PaidStatus;
 import com.xuebang.platform.unionpay.shell.domain.FundsChangeRecord;
 import com.xuebang.platform.unionpay.shell.repository.FundsChangeRecordRep;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -47,7 +50,7 @@ public class UnionPayServiceTest extends AbstractServiceTest {
         long after = fundsChangeRecordRep.count(null);
         assertEquals(before + 1, after);
 
-        FundsChangeRecord one = fundsChangeRecordRep.findOne((root, cq, cb) -> cb.equal(root.get("id"), 7L));
+        FundsChangeRecord one = fundsChangeRecordRep.findOne((root, cq, cb) -> cb.equal(root.get("id"), 17L));
         assertEquals("test校区", one.getBlCampusName());
         assertEquals(1, one.getBlCampusId().intValue());
         assertEquals("123456", one.getCodeNumber());
@@ -58,10 +61,26 @@ public class UnionPayServiceTest extends AbstractServiceTest {
         assertEquals(PaidStatus.UNPAID, one.getPaidStatus());
     }
 
+    @Rule
+    public ExpectedException thrown  = ExpectedException.none();
+
     @Test
     @Rollback
     public void confirm() throws Exception {
-//        unionPayService.confirm(1L);
+        Long id = 14L;
+        unionPayService.confirm(id);
+        FundsChangeRecord fundsChangeRecord = fundsChangeRecordRep.findOne((root, cq, cb) -> cb.equal(root.get("id"), id));
+
+        assertEquals(PaidStatus.PAYING, fundsChangeRecord.getPaidStatus());
+    }
+
+    @Test
+    @Rollback
+    public void confirmFailed() throws Exception {
+        Long id = 15L;
+        thrown.expect(Exception.class);
+        thrown.expectMessage("该收款记录已被锁定");
+        unionPayService.confirm(id);
     }
 
 }

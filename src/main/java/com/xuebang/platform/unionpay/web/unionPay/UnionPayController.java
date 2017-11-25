@@ -49,7 +49,7 @@ public class UnionPayController {
      */
     @GetMapping("/page")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public Response page(SortablePageReq pageReq, ListQo listQo) {
+    public Response page(SortablePageReq pageReq,@ModelAttribute ListQo listQo) {
 
         Pageable pageable = WebUtil.pageRequest(pageReq);
 
@@ -81,7 +81,7 @@ public class UnionPayController {
     }
 
     /**
-     * 确认一条支付记录
+     * 支付成功
      * @param id
      */
     @GetMapping("/success/{id}")
@@ -93,7 +93,7 @@ public class UnionPayController {
     }
 
     /**
-     * 确认一条支付记录
+     * 支付失败
      * @param id
      */
     @GetMapping("/failed/{id}")

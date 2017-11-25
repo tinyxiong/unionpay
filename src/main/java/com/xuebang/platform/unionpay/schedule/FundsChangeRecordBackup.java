@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
@@ -38,15 +39,17 @@ public class FundsChangeRecordBackup {
     @Autowired
     private FundsChangeRecordHistoryRep fundsChangeRecordHistoryRep;
 
-    @Scheduled(fixedRate = 6 * 1000)
+    @Scheduled(fixedRate = 60 * 1000)
     @Transactional
     public void backup() {
-        logger.info("#############BACKUP BEGIN >> " + backupSize + "records per 6s #######");
+        logger.info("#############BACKUP BEGIN >> " + backupSize + " records per 1min #######");
         PageReq pageReq = new PageReq();
         pageReq.setPageSize(backupSize);
         Pageable pageable = WebUtil.pageRequest(pageReq);
+        LocalDateTime weeksAgo = LocalDateTime.now().minusDays(7);
         Page<FundsChangeRecord> fundsChangeRecords = fundsChangeRecordRep.findAll((root, cq, cb) ->
-                root.get("paidStatus").in(Arrays.asList(PaidStatus.PAID, PaidStatus.FAILED)), pageable);
+                cb.and(root.get("paidStatus").in(Arrays.asList(PaidStatus.PAID, PaidStatus.FAILED))
+                , cb.greaterThan(root.get("createTime"), weeksAgo)), pageable);
 
         fundsChangeRecords.forEach(r -> {
             FundsChangeRecordHistory history = FundsChangeRecordHistory.from(r);

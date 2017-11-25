@@ -4,6 +4,7 @@ import com.xuebang.platform.unionpay.shell.constants.PaidStatus;
 import com.xuebang.platform.unionpay.shell.domain.FundsChangeRecord;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * author: xyb
@@ -98,6 +99,7 @@ public class FundsChangeRecordShellAddCmd {
         fundsChangeRecord.setInstitutionId(this.institutionId);
         fundsChangeRecord.setCodeNumber(this.codeNumber);
         fundsChangeRecord.setTerminalNumber(this.terminalNumber);
+        fundsChangeRecord.setCreateTime(LocalDateTime.now());
         return fundsChangeRecord;
     }
 

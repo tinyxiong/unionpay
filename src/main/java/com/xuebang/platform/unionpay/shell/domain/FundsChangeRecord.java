@@ -4,6 +4,7 @@ import com.xuebang.platform.unionpay.shell.constants.PaidStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * author: xyb
@@ -40,6 +41,9 @@ public class FundsChangeRecord {//todo 字段待补充
 
     //终端编号
     private String terminalNumber;
+
+     //创建时间
+    private LocalDateTime createTime;
 
     public Long getId() {
         return id;
@@ -115,6 +119,14 @@ public class FundsChangeRecord {//todo 字段待补充
 
     public static FundsChangeRecord newOne() {
         return new FundsChangeRecord();
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     //锁定
