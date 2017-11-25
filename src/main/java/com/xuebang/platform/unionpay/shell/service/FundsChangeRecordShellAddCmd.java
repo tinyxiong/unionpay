@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
  */
 public class FundsChangeRecordShellAddCmd {
 
+    private String fundsUuid;
+
     //支付金额
     private BigDecimal paidAmount = BigDecimal.ZERO;
 
@@ -85,12 +87,21 @@ public class FundsChangeRecordShellAddCmd {
         return terminalNumber;
     }
 
+    public String getFundsUuid() {
+        return fundsUuid;
+    }
+
+    public void setFundsUuid(String fundsUuid) {
+        this.fundsUuid = fundsUuid;
+    }
+
     public void setTerminalNumber(String terminalNumber) {
         this.terminalNumber = terminalNumber;
     }
 
     public FundsChangeRecord toFundsChangeRecord() {
         FundsChangeRecord fundsChangeRecord = FundsChangeRecord.newOne();
+        fundsChangeRecord.setFundsUuid(this.fundsUuid);
         fundsChangeRecord.setPaidStatus(PaidStatus.UNPAID);
         fundsChangeRecord.setPaidAmount(this.paidAmount);
         fundsChangeRecord.setRemark(this.remark);

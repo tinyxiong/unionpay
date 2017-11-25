@@ -45,6 +45,8 @@ public class FundsChangeRecordHistory {
     //创建时间
     private LocalDateTime createTime;
 
+    private String fundsUuid;
+
     public Long getId() {
         return id;
     }
@@ -117,6 +119,14 @@ public class FundsChangeRecordHistory {
         this.terminalNumber = terminalNumber;
     }
 
+    public String getFundsUuid() {
+        return fundsUuid;
+    }
+
+    public void setFundsUuid(String fundsUuid) {
+        this.fundsUuid = fundsUuid;
+    }
+
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -140,6 +150,7 @@ public class FundsChangeRecordHistory {
         history.setCodeNumber(r.getCodeNumber());
         history.setTerminalNumber(r.getTerminalNumber());
         history.setCreateTime(r.getCreateTime());
+        history.setFundsUuid(r.getFundsUuid());
         return history;
     }
 }

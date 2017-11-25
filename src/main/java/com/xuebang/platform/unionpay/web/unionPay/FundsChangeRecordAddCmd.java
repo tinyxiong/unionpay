@@ -11,6 +11,9 @@ import java.math.BigDecimal;
  */
 public class FundsChangeRecordAddCmd {
 
+    //BOSS端传过来的uuid, 后续用来查询是否支付成功
+    private String fundsUuid;
+
     //支付金额
     private BigDecimal paidAmount = BigDecimal.ZERO;
 
@@ -87,8 +90,17 @@ public class FundsChangeRecordAddCmd {
         this.terminalNumber = terminalNumber;
     }
 
+    public String getFundsUuid() {
+        return fundsUuid;
+    }
+
+    public void setFundsUuid(String fundsUuid) {
+        this.fundsUuid = fundsUuid;
+    }
+
     public FundsChangeRecordShellAddCmd toShellAddCmd() {
         FundsChangeRecordShellAddCmd shellAddCmd = FundsChangeRecordShellAddCmd.newOne();
+        shellAddCmd.setFundsUuid(this.fundsUuid);
         shellAddCmd.setPaidAmount(this.paidAmount);
         shellAddCmd.setRemark(this.remark);
         shellAddCmd.setBlCampusId(this.blCampusId);

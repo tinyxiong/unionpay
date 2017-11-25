@@ -45,6 +45,8 @@ public class FundsChangeRecord {//todo 字段待补充
      //创建时间
     private LocalDateTime createTime;
 
+    private String fundsUuid;
+
     public Long getId() {
         return id;
     }
@@ -115,6 +117,14 @@ public class FundsChangeRecord {//todo 字段待补充
 
     public void setTerminalNumber(String terminalNumber) {
         this.terminalNumber = terminalNumber;
+    }
+
+    public String getFundsUuid() {
+        return fundsUuid;
+    }
+
+    public void setFundsUuid(String fundsUuid) {
+        this.fundsUuid = fundsUuid;
     }
 
     public static FundsChangeRecord newOne() {
